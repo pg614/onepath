@@ -1,5 +1,5 @@
 // CONFIG: set after Formspree signup (free tier). Same form receives waitlist + founding clicks.
-const FORM = "https://formspree.io/f/YOUR_FORM_ID";
+const FORM = "https://formspree.io/f/xkjjjzlv";
 const gc = (path,title)=>{try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
 const post = d=>fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)});
 const P={
