@@ -67,7 +67,7 @@ function contrib(q,val){ // returns {path:pts} and label
  if(q.t==="multi"){const o={};(val||[]).forEach(k=>{for(const[p,v]of Object.entries(q.o[k][1]))o[p]=Math.min(3,(o[p]||0)+v)});return o}
  return {}}
 function maxFor(q,p){if(q.t==="slider")return Math.max(q.lo[p]||0,q.hi[p]||0);if(q.t==="single")return Math.max(0,...q.o.map(o=>o[1][p]||0));if(q.t==="multi")return Math.min(3,q.o.reduce((s,o)=>s+(o[1][p]||0),0));return 0}
-function label(q,val){if(q.t==="slider")return val+" "+q.unit;if(q.t==="single")return q.o[val][0];if(q.t==="multi")return (val||[]).map(k=>q.o[k][0]).join(", ");return val}
+function label(q,val){if(q.t==="slider")return val+" "+(val===1?q.unit.replace("hours","hour").replace("months","month"):q.unit);if(q.t==="single")return q.o[val][0];if(q.t==="multi")return (val||[]).map(k=>q.o[k][0]).join(", ");return val}
 
 function score(){const tot={},dim={},log={};ORDER.forEach(p=>{tot[p]=0;dim[p]=SECTIONS.map(()=>[0,0]);log[p]=[]});
  Q.forEach(q=>{const v=st.a[q.id];const c=contrib(q,v);ORDER.forEach(p=>{const m=maxFor(q,p);dim[p][q.s][1]+=m;const g=c[p]||0;dim[p][q.s][0]+=g;tot[p]+=g;if(g>0&&q.t!=="text")log[p].push([g,q,v])})});
@@ -110,9 +110,64 @@ function story(){rEl.hidden=true;qEl.hidden=false;const s=st.story||{};
  const fin=skip=>{st.story=skip?{}:read();const filled=Object.keys(st.story).length>0;gc(filled?"story-filled":"story-skipped",filled?"Story filled":"Story skipped");st.storyDone=true;save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
  document.getElementById("skip").onclick=()=>fin(true);document.getElementById("see").onclick=()=>fin(false)}
 const snip=t=>{t=t.replace(/\s+/g," ").trim();const w=t.split(" ");return w.length>12?w.slice(0,12).join(" ")+"…":t};
+// ---- richer result content ----
+const HOBBY=["gardening","home cooking and baking","crafts and woodworking","travel","fishing and the outdoors","pets","history and books","family life"];
+const CAREER=["office and admin work","healthcare and caregiving","teaching","the trades","sales and customer service","security and public service","running a small business",null];
+const clip=t=>{t=(t||"").replace(/\s+/g," ").trim().replace(/[.!?]+$/,"");if(t.length>50)t=t.slice(0,50).replace(/\s\S*$/,"")+"…";return t?t.charAt(0).toLowerCase()+t.slice(1):""};
+function ctx(){const a=st.a;return{t:clip(a.askedfor),p:clip(a.problem),h:(a.hobbies||[]).map(k=>HOBBY[k]),c:a.career!=null?CAREER[a.career]:null,local:a.local===0||a.local===1}}
+const IDEAS={
+ dir:[c=>c.t&&`A friendly guide to ${c.t}`,c=>c.h[0]&&`A guide to the best ${c.h[0]} spots and gear around your area`,c=>c.p&&`An honest guide that helps with this: ${c.p}`,c=>c.local&&`A guide to trusted local services in your town`,c=>c.c&&`A resource guide for people working in ${c.c}`,
+  ()=>"A guide to the best fishing spots around your area",()=>"Medicare made simple for first-timers",()=>"Home repair help for older homes",()=>"The best tools for new gardeners"],
+ dig:[c=>c.t&&`A simple step-by-step checklist for ${c.t}`,c=>c.h[0]&&`Printable planners for ${c.h[0]}`,c=>c.c&&`Ready-to-use templates for people in ${c.c}`,c=>c.p&&`A downloadable guide that helps with: ${c.p}`,
+  ()=>"A retirement paperwork checklist",()=>"A printable meal planner for two",()=>"A home maintenance calendar for every season"],
+ news:[c=>c.t&&`A weekly email of tips on ${c.t}`,c=>c.h[0]&&`A Sunday email for people who love ${c.h[0]}`,c=>c.local&&`A weekly "what's on this week" email for your town`,c=>c.c&&`Weekly news and tips for people in ${c.c}`,
+  ()=>"A season-by-season garden email",()=>"A local history story every week",()=>"Weekly tips for getting the most out of retirement"],
+ face:[c=>c.t&&`Short how-to videos about ${c.t}`,c=>c.h[0]&&`Calm explainer videos about ${c.h[0]}`,c=>c.c&&`Story videos: what years in ${c.c} teach you`,c=>c.p&&`Videos that answer this common problem: ${c.p}`,
+  ()=>"Easy home fixes, explained step by step",()=>"History stories in five minutes",()=>"Beginner gardening tips"],
+ tool:[c=>c.t&&`A simple online helper for ${c.t}`,c=>c.p&&`A small tool that helps with: ${c.p}`,c=>c.c&&`A handy checklist maker for people in ${c.c}`,c=>c.h[0]&&`A planner tool for ${c.h[0]}`,
+  ()=>"A 'how much paint do I need' calculator",()=>"A medication schedule maker",()=>"A garden planting-date finder"],
+ lead:[c=>c.local&&`A "find a trusted handyman" site for your town`,c=>c.p&&`A local site that helps with: ${c.p}`,c=>c.h[0]&&`A local finder for ${c.h[0]} shops and services`,c=>c.c==="the trades"&&`A local site for the trade you know best`,
+  ()=>"Find a reliable pet sitter in your area",()=>"Trusted roofers and gutter cleaners near you",()=>"A local lawn care finder"],
+ prod:[c=>c.t&&`A done-for-you service helping people with ${c.t}`,c=>c.c&&`A service built on your experience in ${c.c}`,c=>c.p&&`A service that takes this off people's plates: ${c.p}`,
+  ()=>"Resume refresh for people changing careers",()=>"Writing online listings for local shops",()=>"Family history write-ups"],
+ crea:[c=>c.t&&`Short videos sharing your know-how on ${c.t}`,c=>c.h[0]&&`A friendly "${c.h[0]} with me" video series`,c=>c.c&&`Stories and lessons from your years in ${c.c}`,
+  ()=>"Classic recipes in one minute",()=>"Tips from a lifetime of fixing things",()=>"Gardening through the seasons"],
+ comm:[c=>c.c&&`A club for people who worked in ${c.c}`,c=>c.t&&`A members' group learning about ${c.t} together`,c=>c.h[0]&&`A ${c.h[0]} club with weekly topics`,
+  ()=>"A club for new retirees finding their rhythm",()=>"A support circle for family caregivers",()=>"A morning group for small business owners"]};
+function ideasFor(p){const c=ctx(),out=[];for(const f of IDEAS[p]){const v=f(c);if(v&&!out.includes(v))out.push(v);if(out.length>=4)break}return out}
+const MORE={
+ dir:{how:"Your AI partner builds a website that answers the questions people search for on one topic, like which tools to buy or which local services to trust. It adds helpful pages every week so more people find it on Google over time.",
+  money:[["Display ads","Small ads shown on your pages. Ad networks pay based on how many people visit."],["Affiliate links","When a reader buys something you recommend through your link, the store pays a small commission."],["Featured listings","Local businesses pay to be highlighted at the top of a page."],["A paid downloadable guide","A deeper guide readers can buy and download."]],
+  road:[["Month 1","Your AI partner picks the topic, builds the site and publishes the first 20 pages."],["Months 2–3","50+ pages, an email sign-up, and the first visitors from Google."],["Months 4–6","First ad or affiliate income becomes possible. First outreach to local sponsors."],["Months 7–12","Grow the pages that work best, and possibly add a paid guide."]]},
+ dig:{how:"Your AI partner creates a simple download, like a checklist or planner, that solves one problem people already look for help with. It sets up a small shop page and tells people about it.",
+  money:[["Product sales","People pay once and download the file right away."],["Bundles","Several related downloads sold together."],["Custom versions","A personalized version for people who want extra help."],["Affiliate links","Recommending related tools and earning a small commission."]],
+  road:[["Month 1","Topic chosen, first download written and designed, shop page live."],["Months 2–3","Two or three more products, an email list, first visitors."],["Months 4–6","First sales possible. Improve the products people look at most."],["Months 7–12","Bundles, more products, and sharing in more places."]]},
+ news:{how:"Your AI partner writes a short, friendly email every week on one subject and sends it to people who sign up. It also writes posts that help new readers find it.",
+  money:[["Sponsorships","A business pays to be mentioned in your email."],["A paid edition","Readers who want extra pay a small monthly fee."],["Affiliate recommendations","A small commission when readers buy something you suggest."],["Classified ads","Small paid notices from readers or local businesses."]],
+  road:[["Month 1","Topic and reader chosen, sign-up page live, first four emails sent."],["Months 2–3","A steady weekly rhythm and the first hundred readers is the goal."],["Months 4–6","First sponsor conversations become possible as readers grow."],["Months 7–12","Grow the reader list and possibly add a paid edition."]]},
+ face:{how:"Your AI partner writes and makes short videos with a narrator voice and pictures, so you never need to appear. It uploads them on a schedule and learns from what people watch.",
+  money:[["Platform ad share","Video sites share ad money with channels once they qualify."],["Sponsorships","Companies pay for a short mention in a video."],["Affiliate links","Links in the description earn a commission on purchases."],["A paid guide","A deeper guide or class viewers can buy."]],
+  road:[["Month 1","Channel set up, first 8 videos published."],["Months 2–3","30+ videos and the first subscribers."],["Months 4–6","Focus on the topics people watch most. Affiliate income possible."],["Months 7–12","Possibly qualify for the platform's ad sharing, and approach sponsors."]]},
+ tool:{how:"Your AI partner builds a small, easy web page that does one handy job, like a calculator or a schedule maker. It keeps it running and improves it based on how people use it.",
+  money:[["Extra features","Free to use, with a small fee for extras."],["One-time unlock","Pay once for the full version."],["Ads","Small ads on the tool's page."],["Affiliate links","Recommending related products people need next."]],
+  road:[["Month 1","Idea checked, first version built and online."],["Months 2–3","Improvements from feedback, a welcome page, first users."],["Months 4–6","A paid extra or unlock becomes possible."],["Months 7–12","Grow what people use most, possibly add a second tool."]]},
+ lead:{how:"Your AI partner builds a website for your area that helps people find a trusted local service. When someone asks for help, the request goes to a good local business.",
+  money:[["Pay per request","Local businesses pay for each customer request they receive."],["Featured spot","A business pays monthly to be the top recommendation."],["Renting the site","One business pays to have the whole site send requests to them."]],
+  road:[["Month 1","Service and town chosen, site built, request form live."],["Months 2–3","Local pages, map listings, first requests start to come in."],["Months 4–6","First conversations with local businesses about paying for requests."],["Months 7–12","Add nearby towns or a second service."]]},
+ prod:{how:"You offer one clear service based on what you know, at one set price. Your AI partner builds the order page, drafts the work, and you check it before it goes out.",
+  money:[["Per-order price","Customers pay a set price for each job."],["Packages","A bundle of several jobs at once."],["Repeat clients","Some customers come back every month."]],
+  road:[["Month 1","Service shaped and priced, order page live."],["Months 2–3","First orders possible. Improve the process with each one."],["Months 4–6","Add a package, collect kind words from happy customers."],["Months 7–12","Grow through referrals and a second related service."]]},
+ crea:{how:"You record short clips on your phone, and your AI partner writes the words, edits the videos and posts them. Over time people who like your style follow along.",
+  money:[["Creator programs","Some platforms share money with creators once they qualify."],["Brand sponsorships","Companies pay you to mention their product."],["A simple paid offer","A guide or class for followers who want more."],["Affiliate links","A small commission on things you recommend."]],
+  road:[["Month 1","Topics planned, first 10 short videos posted."],["Months 2–3","A steady posting rhythm and first followers."],["Months 4–6","A simple paid guide or class becomes possible."],["Months 7–12","Grow on one platform and possibly talk to sponsors."]]},
+ comm:{how:"Your AI partner sets up a friendly online group for people in one situation you understand. It writes weekly topics and welcomes new members, and you pop in to say hello.",
+  money:[["Monthly membership","Members pay a small monthly fee to belong."],["Workshops","Paid sessions on one topic."],["Sponsors","A business that serves your members pays to support the group."]],
+  road:[["Month 1","Theme chosen, club set up, first weekly topics ready."],["Months 2–3","First members invited, a weekly routine in place."],["Months 4–6","A paid membership becomes possible once people find it useful."],["Months 7–12","Add workshops and grow by word of mouth."]]}};
+const shown=x=>Math.round(40+0.6*x);
+const fitLabel=x=>x>=80?"Strong fit":x>=65?"Good fit":"Promising fit";
 
 function done(){
- const{ranked,log}=score(),w=ranked[0],ru=ranked[1],P=PATHS[w.p],R=PATHS[ru.p];
+ const{ranked,log}=score(),w=ranked[0],ru=ranked[1],P=PATHS[w.p],R=PATHS[ru.p],M=MORE[w.p];
  const reasons=log[w.p].sort((a,b)=>b[0]-a[0]).slice(0,4).map(([g,q,v])=>`<li><b>${esc(q.q.replace(/[?.…]+$/,""))}:</b> “${esc(label(q,v))}”</li>`).join("");
  const gaps=SECTIONS.map((s,i)=>[s,w.d[i]-ru.d[i]]).sort((a,b)=>b[1]-a[1])[0];
  const topic=st.a.askedfor,prob=st.a.problem;
@@ -122,9 +177,15 @@ function done(){
  document.getElementById("wlv").value=w.p;
  rEl.innerHTML=`<div class="bar"><i style="width:100%"></i></div><p class="prog">Your one path</p>
  <p class="verdict">${P.name}</p><p class="lede">${P.line}</p>${refl}
- <div class="fit"><div class="fitnum"><b>${w.fit}</b><span>fit score</span></div><div class="dims">${SECTIONS.map((s,i)=>`<div class="dim"><span>${s}</span><div class="track"><i style="width:${w.d[i]}%"></i></div><em>${w.d[i]}</em></div>`).join("")}</div></div>
+ <div class="fit"><div class="fitnum"><b>${shown(w.fit)}</b><span>${fitLabel(shown(w.fit))}</span></div><div class="dims"><p class="dh">Your strengths for this path</p>${SECTIONS.map((s,i)=>[s,w.d[i]]).sort((x,y)=>y[1]-x[1]).map(([s,v],j,arr)=>j===arr.length-1?`<div class="dim covered"><span>${s}</span><em class="cov">Your AI partner covers this part for you</em></div>`:`<div class="dim"><span>${s}</span><div class="track"><i style="width:${shown(v)}%"></i></div><em>${shown(v)}</em></div>`).join("")}</div></div>
+ <h3>How it works</h3><p>${M.how}</p>
+ <h3>Example ideas for you</h3><ul class="why">${ideasFor(w.p).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
  <h3>Why this fits you</h3><ul class="why">${reasons}</ul>${nicheLine}
- <h3>Runner-up: ${R.name}</h3><p class="mute">A close second, with a fit of ${ru.fit}. It came second mainly because of <b>${gaps[0].toLowerCase()}</b>: your first choice matched your answers better there.</p>
+ <h3>Runner-up: ${R.name}</h3><p class="mute">A close second, with a fit of ${shown(ru.fit)}. It came second mainly because of <b>${gaps[0].toLowerCase()}</b>: your first choice matched your answers better there.</p>
+ <h3>How it can make money</h3><ul class="money">${M.money.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
+ <p class="warn">Honest note: results vary a lot. Many new online projects earn nothing for months, and some never do. We don't promise or predict any income.</p>
+ <h3>Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`).join("")}</ol>
+ <p class="fine">Milestones are possible goals, not promises. Timing depends on your topic and effort.</p>
  <div class="split"><div><h3>What your AI business partner builds and runs</h3><p class="hint">No tech skills needed. Nothing to install.</p><ul class="tick">${P.builds.map(x=>`<li>${x}</li>`).join("")}</ul></div>
  <div><h3>What only you do</h3><ul class="you">${P.you.map(x=>`<li>${x}</li>`).join("")}<li>Read a plain-English weekly update and tap approve</li></ul></div></div>
  <p class="fine">A fit score reflects how well a path matches your answers. It is not a prediction of results or income.</p>
