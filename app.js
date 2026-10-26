@@ -109,32 +109,40 @@ function story(){rEl.hidden=true;qEl.hidden=false;const s=st.story||{};
  document.getElementById("back").onclick=()=>{st.i=Q.length-1;save();render()};
  const fin=skip=>{st.story=skip?{}:read();const filled=Object.keys(st.story).length>0;gc(filled?"story-filled":"story-skipped",filled?"Story filled":"Story skipped");st.storyDone=true;save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
  document.getElementById("skip").onclick=()=>fin(true);document.getElementById("see").onclick=()=>fin(false)}
-const snip=t=>{t=t.replace(/\s+/g," ").trim();const w=t.split(" ");return w.length>12?w.slice(0,12).join(" ")+"…":t};
+const snip=t=>{t=t.replace(/\s+/g," ").trim().replace(/[.!?,;:]+$/,"");const w=t.split(" ");return w.length>12?w.slice(0,12).join(" ")+"…":t};
 // ---- richer result content ----
 const HOBBY=["gardening","home cooking and baking","crafts and woodworking","travel","fishing and the outdoors","pets","history and books","family life"];
 const CAREER=["office and admin work","healthcare and caregiving","teaching","the trades","sales and customer service","security and public service","running a small business",null];
-const clip=t=>{t=(t||"").replace(/\s+/g," ").trim().replace(/[.!?]+$/,"");if(t.length>50)t=t.slice(0,50).replace(/\s\S*$/,"")+"…";return t?t.charAt(0).toLowerCase()+t.slice(1):""};
+const ger=v=>({get:"getting",put:"putting",set:"setting",run:"running",shop:"shopping",plan:"planning"}[v]||(/[^e]e$/.test(v)&&v!=="see"?v.slice(0,-1)+"ing":v+"ing"));
+const clip=t=>{t=(t||"").replace(/\s+/g," ").trim().replace(/^["'“‘]+|["'”’]+$/g,"").replace(/[.!?,;:…]+$/,"").trim();if(t.length>50)t=t.slice(0,50).replace(/\s\S*$/,"");if(!t)return"";
+ t=t.split(/,|;| - | and the | but | because /)[0].trim();
+ if(!/^[A-Z]{2,}/.test(t)&&!/^(I|Medicare|Medicaid|Social Security|Amazon|Facebook|Google|YouTube|Etsy|eBay|Ohio|Columbus|Christmas|VA|iPhone|Android|Windows)\b/.test(t))t=t.charAt(0).toLowerCase()+t.slice(1);
+ t=t.replace(/^(it'?s |it is |people say |people find it )/i,"");
+ let m=t.match(/^(?:(?:really |so |too )?(?:hard|difficult|tough|impossible) to|(?:can'?t|cannot|can not|never) (?:seem to )?)\s*(\w+)\s+(.*)$/i);if(m)t=ger(m[1].toLowerCase())+" "+m[2];
+ m=t.match(/^(?:no|not enough|there'?s no|there are no|lack of) (good |reliable |honest |affordable )?(.*)$/i);if(m){const rest=(m[1]||"good ")+m[2];t="finding "+(/^\S+\s+\S*s\b/.test(rest)||/^\S+s\b/.test(m[2])?"":"a ")+rest}
+ t=t.replace(/^(getting|finding) anyone\b/,"$1 someone");
+ return t};
 function ctx(){const a=st.a;return{t:clip(a.askedfor),p:clip(a.problem),h:(a.hobbies||[]).map(k=>HOBBY[k]),c:a.career!=null?CAREER[a.career]:null,local:a.local===0||a.local===1}}
 const IDEAS={
- dir:[c=>c.t&&`A friendly guide to ${c.t}`,c=>c.h[0]&&`A guide to the best ${c.h[0]} spots and gear around your area`,c=>c.p&&`An honest guide that helps with this: ${c.p}`,c=>c.local&&`A guide to trusted local services in your town`,c=>c.c&&`A resource guide for people working in ${c.c}`,
+ dir:[c=>c.t&&`Everything people want to know about ${c.t}`,c=>c.h[0]&&`A guide to the best ${c.h[0]} spots and gear around your area`,c=>c.p&&`Honest help with ${c.p}`,c=>c.local&&`A guide to trusted local services in your town`,c=>c.c&&`A resource guide for people working in ${c.c}`,
   ()=>"A guide to the best fishing spots around your area",()=>"Medicare made simple for first-timers",()=>"Home repair help for older homes",()=>"The best tools for new gardeners"],
- dig:[c=>c.t&&`A simple step-by-step checklist for ${c.t}`,c=>c.h[0]&&`Printable planners for ${c.h[0]}`,c=>c.c&&`Ready-to-use templates for people in ${c.c}`,c=>c.p&&`A downloadable guide that helps with: ${c.p}`,
+ dig:[c=>c.t&&`An easy printable guide to ${c.t}`,c=>c.h[0]&&`Printable planners for ${c.h[0]}`,c=>c.c&&`Ready-to-use templates for people in ${c.c}`,c=>c.p&&`A step-by-step checklist for ${c.p}`,
   ()=>"A retirement paperwork checklist",()=>"A printable meal planner for two",()=>"A home maintenance calendar for every season"],
  news:[c=>c.t&&`A weekly email of tips on ${c.t}`,c=>c.h[0]&&`A Sunday email for people who love ${c.h[0]}`,c=>c.local&&`A weekly "what's on this week" email for your town`,c=>c.c&&`Weekly news and tips for people in ${c.c}`,
   ()=>"A season-by-season garden email",()=>"A local history story every week",()=>"Weekly tips for getting the most out of retirement"],
- face:[c=>c.t&&`Short how-to videos about ${c.t}`,c=>c.h[0]&&`Calm explainer videos about ${c.h[0]}`,c=>c.c&&`Story videos: what years in ${c.c} teach you`,c=>c.p&&`Videos that answer this common problem: ${c.p}`,
+ face:[c=>c.t&&`Short how-to videos about ${c.t}`,c=>c.h[0]&&`Calm explainer videos about ${c.h[0]}`,c=>c.c&&`Story videos: what years in ${c.c} teach you`,c=>c.p&&`Short videos on ${c.p}, explained simply`,
   ()=>"Easy home fixes, explained step by step",()=>"History stories in five minutes",()=>"Beginner gardening tips"],
- tool:[c=>c.t&&`A simple online helper for ${c.t}`,c=>c.p&&`A small tool that helps with: ${c.p}`,c=>c.c&&`A handy checklist maker for people in ${c.c}`,c=>c.h[0]&&`A planner tool for ${c.h[0]}`,
+ tool:[c=>c.t&&`A simple online helper for ${c.t}`,c=>c.p&&`A small online helper for ${c.p}`,c=>c.c&&`A handy checklist maker for people in ${c.c}`,c=>c.h[0]&&`A planner tool for ${c.h[0]}`,
   ()=>"A 'how much paint do I need' calculator",()=>"A medication schedule maker",()=>"A garden planting-date finder"],
- lead:[c=>c.local&&`A "find a trusted handyman" site for your town`,c=>c.p&&`A local site that helps with: ${c.p}`,c=>c.h[0]&&`A local finder for ${c.h[0]} shops and services`,c=>c.c==="the trades"&&`A local site for the trade you know best`,
+ lead:[c=>c.local&&`A "find a trusted handyman" site for your town`,c=>c.p&&`A local site for ${c.p} in your town`,c=>c.h[0]&&`A local finder for ${c.h[0]} shops and services`,c=>c.c==="the trades"&&`A local site for the trade you know best`,
   ()=>"Find a reliable pet sitter in your area",()=>"Trusted roofers and gutter cleaners near you",()=>"A local lawn care finder"],
- prod:[c=>c.t&&`A done-for-you service helping people with ${c.t}`,c=>c.c&&`A service built on your experience in ${c.c}`,c=>c.p&&`A service that takes this off people's plates: ${c.p}`,
+ prod:[c=>c.t&&`A done-for-you service helping people with ${c.t}`,c=>c.c&&`A service built on your experience in ${c.c}`,c=>c.p&&`A service that takes ${c.p} off people's plates`,
   ()=>"Resume refresh for people changing careers",()=>"Writing online listings for local shops",()=>"Family history write-ups"],
  crea:[c=>c.t&&`Short videos sharing your know-how on ${c.t}`,c=>c.h[0]&&`A friendly "${c.h[0]} with me" video series`,c=>c.c&&`Stories and lessons from your years in ${c.c}`,
   ()=>"Classic recipes in one minute",()=>"Tips from a lifetime of fixing things",()=>"Gardening through the seasons"],
  comm:[c=>c.c&&`A club for people who worked in ${c.c}`,c=>c.t&&`A members' group learning about ${c.t} together`,c=>c.h[0]&&`A ${c.h[0]} club with weekly topics`,
   ()=>"A club for new retirees finding their rhythm",()=>"A support circle for family caregivers",()=>"A morning group for small business owners"]};
-function ideasFor(p){const c=ctx(),out=[];for(const f of IDEAS[p]){const v=f(c);if(v&&!out.includes(v))out.push(v);if(out.length>=4)break}return out}
+function ideasFor(p){const c=ctx(),out=[];if(c.p&&c.p===c.t)c.p="";for(const f of IDEAS[p]){const v=f(c);if(v&&!out.includes(v))out.push(v);if(out.length>=4)break}return out}
 const MORE={
  dir:{how:"Your AI partner builds a website that answers the questions people search for on one topic, like which tools to buy or which local services to trust. It adds helpful pages every week so more people find it on Google over time.",
   money:[["Display ads","Small ads shown on your pages. Ad networks pay based on how many people visit."],["Affiliate links","When a reader buys something you recommend through your link, the store pays a small commission."],["Featured listings","Local businesses pay to be highlighted at the top of a page."],["A paid downloadable guide","A deeper guide readers can buy and download."]],
@@ -163,11 +171,22 @@ const MORE={
  comm:{how:"Your AI partner sets up a friendly online group for people in one situation you understand. It writes weekly topics and welcomes new members, and you pop in to say hello.",
   money:[["Monthly membership","Members pay a small monthly fee to belong."],["Workshops","Paid sessions on one topic."],["Sponsors","A business that serves your members pays to support the group."]],
   road:[["Month 1","Theme chosen, club set up, first weekly topics ready."],["Months 2–3","First members invited, a weekly routine in place."],["Months 4–6","A paid membership becomes possible once people find it useful."],["Months 7–12","Add workshops and grow by word of mouth."]]}};
+const GROW={
+ dir:{s:[["Answering real Google questions","New pages each week that answer what people actually type into Google, so they find your site."],["Pinterest pins","Pretty picture pins that link back to your guides, so people discover them while browsing."],["Helpful posts in online groups","Friendly, useful posts for Facebook groups, Reddit and local boards, drafted for you to approve."],["Local partners","Teaming up with local businesses and newsletters that share your guides."],["An email list","A simple sign-up so readers come back each time there's a new guide."]],mile:"Steady visitors from Google and pins are the aim."},
+ dig:{s:[["Searchable shop listings","Product pages written the way buyers search, so they show up."],["Pinterest pins","Picture pins that show your downloads and link to the shop."],["Helpful posts in online groups","Useful tips in groups where your buyers gather, drafted for you to approve."],["A free sample","A small free download that brings people onto your email list."]],mile:"Regular shop visitors from pins and search are the aim."},
+ news:{s:[["Swaps with similar newsletters","You and another newsletter recommend each other to your readers."],["Referral rewards","Readers who share your email with friends get a small thank-you, like a bonus guide."],["Snippets on social media","Short bits of each issue posted online with a sign-up link."],["Helpful posts in online groups","Useful posts in groups where your readers gather, drafted for you to approve."]],mile:"A growing list of regular readers is the aim."},
+ face:{s:[["Searchable titles","Video titles and descriptions written around what people search for."],["Short clips","Bite-size versions posted on other video apps to bring viewers back."],["Posting on a steady schedule","Regular uploads, which video sites tend to reward."],["Helpful posts in online groups","Sharing useful videos where people ask about your topic, drafted for you to approve."]],mile:"Regular viewers and subscribers are the aim."},
+ tool:{s:[["Answering real Google questions","A welcome page and help pages that match what people search for."],["Tool directories","Listing your tool on sites where people look for handy tools."],["Helpful posts in online groups","Sharing the tool where people ask for help with that job, drafted for you to approve."],["Word of mouth","A simple share button so happy users can pass it on."]],mile:"A steady stream of people using the tool is the aim."},
+ lead:{s:[["Google Business Profile","A free listing so you show up on Google Maps in your area."],["Local directories","Listing the site on local business directories and maps."],["Reviews","Kindly asking happy customers to leave a review, which helps others trust the site."],["Local community boards","Helpful posts on neighborhood groups and boards, drafted for you to approve."]],mile:"Regular requests from neighbors are the aim."},
+ prod:{s:[["A clear, searchable order page","Written the way people search for this kind of help."],["Helpful posts in online groups","Useful advice where your customers gather, drafted for you to approve."],["Referrals","A small thank-you for customers who send a friend."],["Kind words from customers","Real reviews from happy customers shown on your page, with their permission."]],mile:"A steady trickle of inquiries is the aim."},
+ crea:{s:[["Searchable titles and captions","Written around what people look for, so new viewers find you."],["Posting on a steady schedule","Regular short videos, which apps tend to reward."],["Short clips on more than one app","The same video shared in a few places to reach more people."],["Joining the conversation","Friendly replies to comments, drafted for you to approve."]],mile:"A growing group of regular followers is the aim."},
+ comm:{s:[["A free taster","A free guide or open session that invites people in."],["Helpful posts in online groups","Useful posts where people like your members gather, drafted for you to approve."],["Member invites","Members can invite a friend to join."],["Partners","Teaming up with groups or newsletters that serve the same people."]],mile:"A small, active group of members is the aim."}};
+
 const shown=x=>Math.round(40+0.6*x);
 const fitLabel=x=>x>=80?"Strong fit":x>=65?"Good fit":"Promising fit";
 
 function done(){
- const{ranked,log}=score(),w=ranked[0],ru=ranked[1],P=PATHS[w.p],R=PATHS[ru.p],M=MORE[w.p];
+ const{ranked,log}=score(),w=ranked[0],ru=ranked[1],P=PATHS[w.p],R=PATHS[ru.p],M=MORE[w.p],G=GROW[w.p];
  const reasons=log[w.p].sort((a,b)=>b[0]-a[0]).slice(0,4).map(([g,q,v])=>`<li><b>${esc(q.q.replace(/[?.…]+$/,""))}:</b> “${esc(label(q,v))}”</li>`).join("");
  const gaps=SECTIONS.map((s,i)=>[s,w.d[i]-ru.d[i]]).sort((a,b)=>b[1]-a[1])[0];
  const topic=st.a.askedfor,prob=st.a.problem;
@@ -184,7 +203,9 @@ function done(){
  <h3>Runner-up: ${R.name}</h3><p class="mute">A close second, with a fit of ${shown(ru.fit)}. It came second mainly because of <b>${gaps[0].toLowerCase()}</b>: your first choice matched your answers better there.</p>
  <h3>How it can make money</h3><ul class="money">${M.money.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
  <p class="warn">Honest note: results vary a lot. Many new online projects earn nothing for months, and some never do. We don't promise or predict any income.</p>
- <h3>Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`).join("")}</ol>
+ <h3>How your AI partner brings people in</h3><ul class="money">${G.s.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
+ <p class="warn">Anything posted under your name gets your OK first. Growth usually takes months, so your AI partner keeps at it steadily each week.</p>
+ <h3>Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d],j)=>`<li><b>${t}</b><span>${d}${j===2?" "+G.mile:""}</span></li>`).join("")}</ol>
  <p class="fine">Milestones are possible goals, not promises. Timing depends on your topic and effort.</p>
  <div class="split"><div><h3>What your AI business partner builds and runs</h3><p class="hint">No tech skills needed. Nothing to install.</p><ul class="tick">${P.builds.map(x=>`<li>${x}</li>`).join("")}</ul></div>
  <div><h3>What only you do</h3><ul class="you">${P.you.map(x=>`<li>${x}</li>`).join("")}<li>Read a plain-English weekly update and tap approve</li></ul></div></div>
