@@ -118,3 +118,6 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 .hero .reassure{color:var(--ink)}
 .hero .reassure li{background:rgba(255,255,255,.72);border-radius:999px;padding:4px 12px}
 @media(min-width:760px){.hero{padding:120px 0 42vh}.heroimg img{object-position:50% 80%}}
+
+@media(max-width:759px){.hero{min-height:calc(100svh - 72px);padding:28px 0 40vh}.hero h1{margin-bottom:12px}.hero .sub{margin-bottom:18px}.heroimg img{object-position:50% 100%}.hero .reassure{display:none}}
+@media(min-width:760px){.hero{min-height:calc(100vh - 60px);padding:70px 0 34vh}.heroimg img{object-position:50% 100%}}
