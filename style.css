@@ -121,3 +121,33 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 
 @media(max-width:759px){.hero{min-height:calc(100svh - 72px);padding:28px 0 40vh}.hero h1{margin-bottom:12px}.hero .sub{margin-bottom:18px}.heroimg img{object-position:50% 100%}.hero .reassure{display:none}}
 @media(min-width:760px){.hero{min-height:calc(100vh - 60px);padding:70px 0 34vh}.heroimg img{object-position:50% 100%}}
+
+/* theme toggle */
+.tr{display:flex;gap:10px;align-items:center}
+.themebtn{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:1.3rem;cursor:pointer;display:grid;place-items:center}
+.themebtn:focus-visible,.btn:focus-visible,.pill:focus-visible,.opt:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.themebtn .sun,[data-theme=dark] .themebtn .moon{display:none}[data-theme=dark] .themebtn .sun{display:inline}
+.heroimg.night{display:none}
+/* dark */
+[data-theme=dark]{--ink:#F1EADB;--mute:#C3BBAA;--cream:#0E1528;--paper:#151E36;--gold:#E8BE5C;--olive:#B5CF7A;--line:#2C3756;color-scheme:dark}
+[data-theme=dark] .heroimg.day{display:none}[data-theme=dark] .heroimg.night{display:block}
+[data-theme=dark] .hero{background:#0E1528}
+[data-theme=dark] .hero::after{background:radial-gradient(75% 45% at 50% 28%,rgba(10,16,34,.55) 0,rgba(10,16,34,.25) 55%,rgba(10,16,34,0) 100%),linear-gradient(180deg,rgba(14,21,40,0) 78%,#0E1528 100%)}
+[data-theme=dark] .hero h1,[data-theme=dark] .hero .sub{text-shadow:0 2px 14px rgba(5,8,20,.85)}
+[data-theme=dark] .top{background:rgba(14,21,40,.72)}
+[data-theme=dark] .pill,[data-theme=dark] .btn{background:#F1EADB;color:#0E1528}
+[data-theme=dark] .btn.alt{background:transparent;color:var(--ink)}[data-theme=dark] .btn.alt:hover{background:var(--ink);color:#0E1528}
+[data-theme=dark] .tag,[data-theme=dark] .hero .reassure li{background:rgba(14,21,40,.7);color:var(--ink)}
+[data-theme=dark] .tag b{background:var(--gold);color:#0E1528}
+[data-theme=dark] .how div{background:rgba(255,255,255,.04)}
+[data-theme=dark] .opt,[data-theme=dark] input[type=email],[data-theme=dark] .txt,[data-theme=dark] .fit,[data-theme=dark] .money li,[data-theme=dark] .road li{background:#1A2440;border-color:#38446A;color:var(--ink)}
+[data-theme=dark] .opt:hover,[data-theme=dark] .opt.sel{background:#222E50}
+[data-theme=dark] .opt.sel .box{box-shadow:inset 0 0 0 3px #1A2440}
+[data-theme=dark] .note,[data-theme=dark] .warn{background:#1F2A47;color:var(--ink)}
+[data-theme=dark] .ok{background:#1E3320!important;color:#CDE6A0!important}
+[data-theme=dark] .why li,[data-theme=dark] .tick li,[data-theme=dark] .you li{border-color:#2C3756}
+[data-theme=dark] .card{box-shadow:0 30px 60px -40px #000}
+[data-theme=dark] ::placeholder{color:#9A93A8}
+[data-theme=dark] #result p{color:#D9D1C1}
+[data-theme=dark] .box{border-color:#8E97B5}
+[data-theme=dark] .opt{border-color:#38446A}

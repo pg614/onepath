@@ -4,14 +4,16 @@
 <title>One Path: stop browsing side hustles. Pick one.</title>
 <meta name="description" content="Too many ways to make money online? Take a 6-question quiz, get ONE path, then an AI CEO builds it and tells you what to do each week.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap">
+<script>(function(){try{var t=localStorage.getItem("op-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t})()</script>
+<meta name="color-scheme" content="light dark">
 <link rel="preload" as="image" href="img/hero-tall.webp" media="(max-width:759px)"><link rel="preload" as="image" href="img/hero-wide.webp" media="(min-width:760px)">
 <link rel="stylesheet" href="style.css">
 <!-- GoatCounter: page visits + events. Replace "onepath" with your GoatCounter code. -->
 <script data-goatcounter="https://onepath.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head><body>
-<header class="top"><span class="logo"><i></i>One Path</span><a href="#quiz" class="pill">Take the quiz <span>→</span></a></header>
+<header class="top"><span class="logo"><i></i>One Path</span><span class="tr"><button type="button" id="theme" class="themebtn" aria-label="Switch to dark mode"><span class="moon" aria-hidden="true">☾</span><span class="sun" aria-hidden="true">☀</span></button><a href="#quiz" class="pill">Take the quiz <span>→</span></a></span></header>
 <main>
-<section class="hero"><picture class="heroimg" aria-hidden="true"><source media="(max-width:759px)" srcset="img/hero-tall.webp"><img src="img/hero-wide.webp" alt="" fetchpriority="high"></picture><div class="wrap fade">
+<section class="hero"><picture class="heroimg day" aria-hidden="true"><source media="(max-width:759px)" srcset="img/hero-tall.webp"><img src="img/hero-wide.webp" alt="" fetchpriority="high"></picture><picture class="heroimg night" aria-hidden="true"><source media="(max-width:759px)" srcset="img/hero-night-tall.webp"><img src="img/hero-night-wide.webp" alt="" loading="lazy"></picture><div class="wrap fade">
   <p class="tag"><b>Early access</b> No tech skills needed</p>
   <h1>Overwhelmed? It's all too much.<br><em>Let's build one business for you.</em></h1>
   <p class="sub">Answer a few easy questions. Your AI partner picks one small online business that fits you, then builds it and runs the day-to-day.</p>
@@ -45,4 +47,5 @@
 </main>
 <footer class="wrap"><p class="logo"><i></i>One Path</p><p><b>Honest note:</b> One Path picks one business direction for you and has an AI build and run the day-to-day, with your approval. We make no promises about income or results, and an AI-built business is not guaranteed to earn anything. Most new online projects earn little or nothing for months, and many never do. Results depend on your effort, market, and many factors outside our control. Nothing here is financial advice.</p><p>© 2026 One Path</p></footer>
 <script src="app.js"></script>
+<script>(function(){var b=document.getElementById("theme"),d=document.documentElement;function s(){var k=d.dataset.theme==="dark";b.setAttribute("aria-label",k?"Switch to light mode":"Switch to dark mode");b.setAttribute("aria-pressed",k)}s();b.onclick=function(){d.dataset.theme=d.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("op-theme",d.dataset.theme)}catch(e){}s()}})()</script>
 </body></html>
