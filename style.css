@@ -151,3 +151,4 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 [data-theme=dark] #result p{color:#D9D1C1}
 [data-theme=dark] .box{border-color:#8E97B5}
 [data-theme=dark] .opt{border-color:#38446A}
+.more{font-size:.95rem;color:var(--mute);margin:12px 0 0}
