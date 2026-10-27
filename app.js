@@ -220,5 +220,5 @@ render();
 document.getElementById("wl").onsubmit=async e=>{e.preventDefault();const f=e.target;gc("waitlist-submit","Waitlist submit");
  const r=window.__result||{};try{await post({email:f.email.value,type:"waitlist",verdict:r.winner||"(quiz not finished)",runner_up:r.runner||"",fit:r.fit||"",answers:summary(),in_their_words:st.story||{}})}catch(_){}
  f.hidden=true;document.getElementById("wlmsg").hidden=false};
-document.getElementById("found").onclick=e=>{gc("founding-click","Founding $29 click");const em=document.getElementById("wl").email.value;const r=window.__result||{};
+document.getElementById("found").onclick=e=>{gc("founding-click","Founding $49 click");const em=document.getElementById("wl").email.value;const r=window.__result||{};
  post({type:"founding_click",email:em||"(none)",verdict:r.winner||"",answers:summary(),in_their_words:st.story||{}}).catch(()=>{});e.target.hidden=true;document.getElementById("fmsg").hidden=false};
