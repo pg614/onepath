@@ -105,3 +105,16 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 .money b,.road b{font-weight:600}.money span,.road span{color:var(--mute);font-size:.98rem}
 .road{counter-reset:r}.road li{border-left:4px solid var(--olive)}
 .warn{background:#F6F0E2;border-radius:14px;padding:12px 16px;font-size:.95rem;color:var(--ink);margin-top:12px}
+
+/* painted hero */
+.hero{background:#F3E6CC;padding:70px 0 52vh;min-height:100vh}
+.hero::before{display:none}
+.heroimg{position:absolute;inset:0;z-index:0}.heroimg img{width:100%;height:100%;object-fit:cover;object-position:50% 70%;display:block}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:
+ radial-gradient(75% 45% at 50% 28%,rgba(250,244,230,.82) 0,rgba(250,244,230,.45) 55%,rgba(250,244,230,0) 100%),
+ linear-gradient(180deg,rgba(250,244,230,0) 78%,var(--cream) 100%)}
+.hero .wrap{z-index:1}
+.hero h1,.hero .sub{text-shadow:0 1px 12px rgba(250,244,230,.9)}
+.hero .reassure{color:var(--ink)}
+.hero .reassure li{background:rgba(255,255,255,.72);border-radius:999px;padding:4px 12px}
+@media(min-width:760px){.hero{padding:120px 0 42vh}.heroimg img{object-position:50% 80%}}
