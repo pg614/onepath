@@ -63,3 +63,21 @@ CTA button: "Take the quiz" / "Learn more". No income language anywhere. Note: M
 **Optional Reddit leg:** Reddit's minimum is $5/day per campaign (prowlo.com, stackmatix.com 2026). Target r/sidehustle, r/Entrepreneur, r/careerguidance-style communities via subreddit targeting at $10/day for 7 days. Benly.ai's 2026 benchmark lists ~$1.20 average CPC for specific-subreddit targeting (range $0.50-2.00): https://benly.ai/learn/reddit-ads/reddit-ads-cost-benchmarks . Some sources say a "judgeable" Reddit test needs far more ($50/day, prowlo.com), so a $10/day test is a cheap signal check, not a verdict.
 
 Decision gate (from the market-check plan): 100+ signups and 5%+ founding-button click rate over ~2 weeks combined with organic posts.
+
+## 4. Audience page ads (drafts, nothing posted)
+
+Each links to its own page so signups and founding clicks compare per page (Formspree `source` field; GoatCounter events end in -easy / -agents / -side).
+
+**Easy (older folks, retirees)** → https://pg614.github.io/onepath/easy/
+Headline: Let us handle it for you.
+Text: Curious about a small online business but not a computer person? Answer a few easy questions. We pick one, build it, and look after it. It's built AI-agent ready, so people and their AI assistants can find you. No setup, no jargon.
+
+**Agents (real estate agents)** → https://pg614.github.io/onepath/agents/
+Headline: The market's changing. Build your online business now.
+Text: Feeling squeezed out? Answer a few questions and your AI partner picks one online business that fits what you know, then builds and runs it, AI-agent ready from day one. One business at a time.
+
+**Side (security, retail, care workers)** → https://pg614.github.io/onepath/side/
+Headline: Build something of your own on the side.
+Text: Outgrown the job? Answer a few easy questions. Your AI partner picks one small online business that fits your hours and builds it with you, AI-agent ready so people can find and trust it. Free quiz.
+
+No income or earnings claims in any of these.

@@ -158,3 +158,6 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 .agent .agent-t span{color:var(--gold)}
 .agent .agent-s{font-size:.9rem;color:var(--mute);margin-top:6px}
 [data-theme=dark] .agent{background:#1A2440;border-color:#38446A}
+/* easy page: extra-big plain type */
+body.big{font-size:19px}body.big .hero .sub{font-size:1.2rem}body.big .opt{font-size:1.2rem}body.big .btn{font-size:1.1rem;padding:18px 30px}body.big h1{font-size:clamp(2.9rem,10vw,5rem)}
+body.long .hero h1{font-size:clamp(2.1rem,7.4vw,4rem)}

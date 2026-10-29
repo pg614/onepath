@@ -1,8 +1,9 @@
 // One Path assessment. Formspree form xkjjjzlv receives waitlist + founding clicks.
 const FORM = "https://formspree.io/f/xkjjjzlv";
 const KEY = "onepath-v3";
-const gc = (path,title)=>{try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
-const post = d=>fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)});
+const SRC = document.documentElement.dataset.src||"home";
+const gc = (path,title)=>{if(SRC!=="home"){path+="-"+SRC;title+=" ("+SRC+")"}try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
+const post = d=>(d={source:SRC,page:location.pathname,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const PATHS={
