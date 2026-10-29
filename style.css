@@ -152,3 +152,9 @@ footer{font-size:.9rem}.how p{font-size:1.02rem}
 [data-theme=dark] .box{border-color:#8E97B5}
 [data-theme=dark] .opt{border-color:#38446A}
 .more{font-size:.95rem;color:var(--mute);margin:12px 0 0}
+.agent{margin-top:22px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.5)}
+.agent p{margin:0;font-size:.98rem;color:var(--ink)}
+.agent .agent-t{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:6px}
+.agent .agent-t span{color:var(--gold)}
+.agent .agent-s{font-size:.9rem;color:var(--mute);margin-top:6px}
+[data-theme=dark] .agent{background:#1A2440;border-color:#38446A}

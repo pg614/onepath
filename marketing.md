@@ -18,7 +18,7 @@ I build small AI tools on the side, so I finally built one for my own problem: a
 
 Next I'm working on the part I actually need: something that checks in every week with a short to-do so I don't drift again.
 
-I'm not promising it makes anyone money. Honestly most of this stuff takes a long time and plenty of it never pays off. It's just meant to stop the "starting over" loop.
+I'm not promising it makes anyone money. Honestly most of this stuff takes a long time and plenty of it never pays off. It's just meant to stop the "starting over" loop. Whatever it builds is set up to be AI-agent ready too: clear prices, clean product info and plain terms, so people and their AI assistants can find it and trust it.
 
 Would love blunt feedback:
 - Did the verdict you got feel right, or totally off?
@@ -41,13 +41,13 @@ Paul's comment for the r/sidehustle Monday thread (needs detail, not just a link
 ## 2. Ad variations (Reddit Ads or Meta)
 
 **A.** Headline: Tired of starting over?
-Text: Three side ideas started, none finished? Answer 6 quick questions and get ONE path that fits your time, plus a first step for this week. Free, 60 seconds.
+Text: Three side ideas started, none finished? Answer 6 quick questions and get ONE path that fits your time, plus a first step for this week. Free, 60 seconds. Built AI-agent ready, so people and their AI assistants can find you.
 
 **B.** Headline: Stop weighing options. Pick one.
-Text: Too many ways to "make money online" and you're stuck in the middle of all of them. One Path picks one for you and gives you small, steady steps every week.
+Text: Too many ways to "make money online" and you're stuck in the middle of all of them. One Path picks one for you and gives you small, steady steps every week. Every business is built AI-agent ready from day one.
 
 **C.** Headline: Burned out on side hustles?
-Text: You don't need another list of ideas. You need one decision and a plan you can keep up with after work. Take the free quiz.
+Text: You don't need another list of ideas. You need one decision and a plan you can keep up with after work. Take the free quiz. Whatever you start, it's built so AI assistants can find and trust it.
 
 CTA button: "Take the quiz" / "Learn more". No income language anywhere. Note: Meta's ad policies restrict "get rich quick"/earnings-style ads, so this wording also keeps review safe.
 
