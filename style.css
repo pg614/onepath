@@ -163,3 +163,8 @@ body.big{font-size:19px}body.big .hero .sub{font-size:1.2rem}body.big .opt{font-
 body.long .hero h1{font-size:clamp(2.1rem,7.4vw,4rem)}
 .now{font:italic 1.3rem var(--serif);color:var(--gold);margin:0 0 12px}
 .rhythm{font:1.25rem/1.45 var(--serif);color:var(--ink);margin:0 0 18px;padding-bottom:16px;border-bottom:1px solid var(--line)}.rhythm em{color:var(--gold);display:block;font-size:1.4rem}
+.logo .mk{width:34px;height:34px;color:var(--ink);flex:none}footer .logo .mk{width:24px;height:24px}[data-theme=dark] .logo .mk{color:#F4EFE6}
+.top .logo{white-space:nowrap}
+.tagline{font:italic 1.35rem/1.4 var(--serif);color:var(--gold);text-align:center;margin:0 0 14px}
+@media(max-width:480px){.top{padding:12px 14px}.top .tr{gap:6px}.top .pill{padding-left:14px;padding-right:14px;white-space:nowrap}.top .logo{font-size:1.12rem;gap:6px}.top .logo .mk{width:26px;height:26px}}
+p.tagline{font:italic 500 1.4rem/1.4 var(--serif)!important;color:var(--gold)!important;text-align:center}
