@@ -168,3 +168,5 @@ body.long .hero h1{font-size:clamp(2.1rem,7.4vw,4rem)}
 .tagline{font:italic 1.35rem/1.4 var(--serif);color:var(--gold);text-align:center;margin:0 0 14px}
 @media(max-width:480px){.top{padding:12px 14px}.top .tr{gap:6px}.top .pill{padding-left:14px;padding-right:14px;white-space:nowrap}.top .logo{font-size:1.12rem;gap:6px}.top .logo .mk{width:26px;height:26px}}
 p.tagline{font:italic 500 1.4rem/1.4 var(--serif)!important;color:var(--gold)!important;text-align:center}
+h2.eyebrow{font-family:inherit;font-weight:400;font-size:.72rem;letter-spacing:.18em;line-height:inherit}
+#faq h3{font-size:1.3rem;margin:1.4em 0 .3em}#faq p{margin:0;color:var(--mute)}
