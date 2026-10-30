@@ -6,6 +6,7 @@ const MAILER = "https://script.google.com/macros/s/AKfycbxVNkoNWRKj4a9txWKSn-3ne
 const SRC = document.documentElement.dataset.src||"home";
 const gc = (path,title)=>{if(SRC!=="home"){path+="-"+SRC;title+=" ("+SRC+")"}try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
 const post = d=>(d={source:SRC,page:location.pathname,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
+const ga=(n,p)=>{try{window.gtag&&gtag("event",n,p||{})}catch(e){}};
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const PATHS={
@@ -219,22 +220,22 @@ function done(){
  <div><h3>What only you do</h3><ul class="you">${P.you.map(x=>`<li>${x}</li>`).join("")}<li>Read a plain-English weekly update and tap approve</li></ul></div></div>
  <p class="fine">A fit score reflects how well a path matches your answers. It is not a prediction of results or income.</p>
  <div class="nav"><button class="back" id="redo">↺ Retake</button><a class="btn" href="#join">Reserve my build <span>→</span></a></div>`;
- const retake=()=>{gc("retake","Retake quiz");st={i:0,a:{}};save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
+ const retake=()=>{gc("retake","Retake quiz");ga("retake");st={i:0,a:{}};save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
  ["redo","retry","wretake"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=retake});
  document.getElementById("prt").onclick=()=>{gc("print","Print result");window.print()};
  const f=document.getElementById("rsf");if(f)f.onsubmit=async e=>{e.preventDefault();const btn=f.querySelector("button");btn.disabled=true;document.getElementById("rserr").hidden=true;
   gc("signup-results","Signup from results");let ok=false;try{const res=await post({email:f.email.value,type:"results_signup",source:"results",result:P.name,verdict:w.p,runner_up:R.name,fit:shown(w.fit),answers:summary(),in_their_words:st.story||{}});ok=res.ok}catch(_){}
   if(ok&&MAILER){fetch(MAILER,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({email:f.email.value,verdict:w.p})}).catch(()=>{})}
-  if(ok){st.signed=true;st.email=f.email.value;save();f.outerHTML=`<p class="ok big" role="status">You're on the launch list! We'll email you your result, ${esc(P.name.toLowerCase())}, soon. Thank you.</p>`;const wl=document.getElementById("wl");wl.email.value=st.email}
+  if(ok){ga("sign_up",{method:"results",result_name:P.name});st.signed=true;st.email=f.email.value;save();f.outerHTML=`<p class="ok big" role="status">You're on the launch list! We'll email you your result, ${esc(P.name.toLowerCase())}, soon. Thank you.</p>`;const wl=document.getElementById("wl");wl.email.value=st.email}
   else{btn.disabled=false;document.getElementById("rserr").hidden=false}};
  st.res=P.name;st.back=false;save();
- if(st.counted!==w.p){gc("quiz-done-"+w.p,"Quiz verdict "+w.p);st.counted=w.p;save()}
+ if(st.counted!==w.p){gc("quiz-done-"+w.p,"Quiz verdict "+w.p);ga("quiz_complete",{result_name:P.name});st.counted=w.p;save()}
  window.__result={winner:w.p,runner:ru.p,fit:w.fit};if(st.email)document.getElementById("wl").email.value=st.email;
 }
 function summary(){const o={};Q.forEach(q=>{const v=st.a[q.id];if(v!=null&&v!==""&&!(Array.isArray(v)&&!v.length))o[q.id]=label(q,v)});return o}
 render();
 document.getElementById("wl").onsubmit=async e=>{e.preventDefault();const f=e.target;gc("waitlist-submit","Waitlist submit");
  const r=window.__result||{};const b=f.querySelector("button");b.disabled=true;let ok=false;try{ok=(await post({email:f.email.value,type:"waitlist",result:r.winner?PATHS[r.winner].name:"(quiz not finished)",verdict:r.winner||"(quiz not finished)",runner_up:r.runner||"",fit:r.fit||"",answers:summary(),in_their_words:st.story||{}})).ok}catch(_){}
- b.disabled=false;if(ok){f.hidden=true;document.getElementById("wlmsg").hidden=false}else alert("Sorry, that didn't go through. Please check your email and try again.")};
-document.getElementById("found").onclick=e=>{gc("founding-click","Founding $49 click");const em=document.getElementById("wl").email.value;const r=window.__result||{};
+ b.disabled=false;if(ok){ga("sign_up",{method:"waitlist",result_name:r.winner?PATHS[r.winner].name:"(quiz not finished)"});f.hidden=true;document.getElementById("wlmsg").hidden=false}else alert("Sorry, that didn't go through. Please check your email and try again.")};
+document.getElementById("found").onclick=e=>{gc("founding-click","Founding $49 click");ga("founding_click",{result_name:(window.__result&&PATHS[window.__result.winner])?PATHS[window.__result.winner].name:""});const em=document.getElementById("wl").email.value;const r=window.__result||{};
  post({type:"founding_click",email:em||"(none)",verdict:r.winner||"",answers:summary(),in_their_words:st.story||{}}).catch(()=>{});e.target.hidden=true;document.getElementById("fmsg").hidden=false};
