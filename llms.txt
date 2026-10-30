@@ -1,0 +1,23 @@
+# Build One Thing
+
+> Build One Thing helps overwhelmed, non-technical people pick one small online business that fits them. An AI CEO is planned to build and run the day-to-day with their approval, and they own it. It is an early test with a waitlist and is not live yet. No income or results are promised.
+
+## Main pages
+
+- [Home](https://buildonething.com/): What Build One Thing is, how it works, and a free quiz that picks one business for you
+- [Free quiz](https://buildonething.com/#quiz): Easy questions about your time, work and hobbies, with one clear result and the reasons for it
+- [Waitlist and founding spot](https://buildonething.com/#join): Join the waitlist, or reserve a founding spot at $49/mo for the first business. Reserving charges nothing.
+- [FAQ](https://buildonething.com/#faq): Plain answers about cost, ownership, tech skills and why no income is promised
+
+## Who it's for
+
+- [For beginners](https://buildonething.com/easy/): A done-for-you approach to starting one online business with no tech skills
+- [For real estate agents](https://buildonething.com/agents/): A side business idea for real estate agents
+- [For a side business](https://buildonething.com/side/): Starting one side business with an AI CEO doing the busy work
+
+## Facts
+
+- Status: early test, not live yet. People can join a waitlist.
+- Pricing planned at launch: $49/mo for the first business, $29/mo for each extra business. The quiz is free.
+- The user owns the business, website, name and email list.
+- No promises or predictions of income. Most new online businesses earn little or nothing for months, and many never do.
