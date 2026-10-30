@@ -2,7 +2,7 @@
 const FORM = "https://formspree.io/f/xkjjjzlv";
 const KEY = "onepath-v3";
 // Google Apps Script web app that emails each results signup their result (tools/email-result.gs). Empty = off.
-const MAILER = "";
+const MAILER = "https://script.google.com/macros/s/AKfycbxVNkoNWRKj4a9txWKSn-3nepqARkfVnIBN18BnEUOWojQbZohRtwUSjkPqUSjWZHDGOQ/exec";
 const SRC = document.documentElement.dataset.src||"home";
 const gc = (path,title)=>{if(SRC!=="home"){path+="-"+SRC;title+=" ("+SRC+")"}try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
 const post = d=>(d={source:SRC,page:location.pathname,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
