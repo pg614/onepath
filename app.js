@@ -1,6 +1,8 @@
 // Build One Thing quiz. Formspree form xkjjjzlv receives waitlist + founding clicks.
 const FORM = "https://formspree.io/f/xkjjjzlv";
 const KEY = "onepath-v3";
+// Google Apps Script web app that emails each results signup their result (tools/email-result.gs). Empty = off.
+const MAILER = "";
 const SRC = document.documentElement.dataset.src||"home";
 const gc = (path,title)=>{if(SRC!=="home"){path+="-"+SRC;title+=" ("+SRC+")"}try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
 const post = d=>(d={source:SRC,page:location.pathname,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
@@ -222,6 +224,7 @@ function done(){
  document.getElementById("prt").onclick=()=>{gc("print","Print result");window.print()};
  const f=document.getElementById("rsf");if(f)f.onsubmit=async e=>{e.preventDefault();const btn=f.querySelector("button");btn.disabled=true;document.getElementById("rserr").hidden=true;
   gc("signup-results","Signup from results");let ok=false;try{const res=await post({email:f.email.value,type:"results_signup",source:"results",result:P.name,verdict:w.p,runner_up:R.name,fit:shown(w.fit),answers:summary(),in_their_words:st.story||{}});ok=res.ok}catch(_){}
+  if(ok&&MAILER){fetch(MAILER,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({email:f.email.value,verdict:w.p})}).catch(()=>{})}
   if(ok){st.signed=true;st.email=f.email.value;save();f.outerHTML=`<p class="ok big" role="status">You're on the launch list! We'll email you your result, ${esc(P.name.toLowerCase())}, soon. Thank you.</p>`;const wl=document.getElementById("wl");wl.email.value=st.email}
   else{btn.disabled=false;document.getElementById("rserr").hidden=false}};
  st.res=P.name;st.back=false;save();
