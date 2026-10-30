@@ -59,6 +59,7 @@ const Q=[
  {s:4,id:"public",t:"single",q:"Would you like your name on it?",o:[["Yes, I'm happy to be the face",{crea:3,comm:2}],["A different name is fine",{news:1,dig:1}],["I'd rather stay in the background",{dir:2,face:2,lead:1,tool:1}]]}];
 
 let st=JSON.parse(localStorage.getItem(KEY)||"null")||{i:0,a:{}};
+if(st.res&&st.storyDone)st.back=true;
 const save=()=>localStorage.setItem(KEY,JSON.stringify(st));
 const qEl=document.getElementById("q"),rEl=document.getElementById("result");
 
@@ -196,7 +197,11 @@ function done(){
  qEl.hidden=true;rEl.hidden=false;
  document.getElementById("wlv").value=w.p;
  rEl.innerHTML=`<div class="bar"><i style="width:100%"></i></div><p class="prog">Your one business</p>
- <p class="verdict">${P.name}</p><p class="lede">${P.line}</p>${refl}
+ ${st.back?`<div class="welcome" id="welcome"><p class="wt">Welcome back, here's your one business.</p><div class="wb"><a class="btn alt" href="#rs" id="wview">View it</a><button class="back" id="wretake">↺ Retake the quiz</button></div></div>`:""}
+ <p class="verdict">${P.name}</p><p class="lede">${P.line}</p>
+ <div class="rsign" id="rs"><h3>Email me my result &amp; save my spot</h3><p>We'll email you this plan and put you on the launch list. Free, no card.</p>
+ ${st.signed?`<p class="ok big">You're on the launch list. We'll email you your result soon. Thank you!</p>`:`<form id="rsf"><input type="email" name="email" required placeholder="you@email.com" aria-label="Your email"><button class="btn big" type="submit">Email me my result <span>→</span></button></form><p class="err" id="rserr" hidden>Sorry, that didn't go through. Please check your email and try again.</p>`}
+ <div class="ropts"><button class="back" id="retry">Not quite right? Try again</button><button class="back" id="prt">🖨 Print / save as PDF</button></div></div>${refl}
  <div class="fit"><div class="fitnum"><b>${shown(w.fit)}</b><span>${fitLabel(shown(w.fit))}</span></div><div class="dims"><p class="dh">Your strengths for this path</p>${SECTIONS.map((s,i)=>[s,w.d[i]]).sort((x,y)=>y[1]-x[1]).map(([s,v],j,arr)=>j===arr.length-1?`<div class="dim covered"><span>${s}</span><em class="cov">Your AI CEO covers this part for you</em></div>`:`<div class="dim"><span>${s}</span><div class="track"><i style="width:${shown(v)}%"></i></div><em>${shown(v)}</em></div>`).join("")}</div></div>
  <h3>How it works</h3><p>${M.how}</p>
  <h3>Example ideas for you</h3><ul class="why">${ideasFor(w.p).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
@@ -208,18 +213,25 @@ function done(){
  <p class="warn">Anything posted under your name gets your OK first. Growth usually takes months, so your AI CEO keeps at it steadily each week.</p>
  <h3>Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d],j)=>`<li><b>${t}</b><span>${d}${j===2?" "+G.mile:""}</span></li>`).join("")}</ol>
  <p class="fine">Milestones are possible goals, not promises. Timing depends on your topic and effort.</p>
- <div class="split"><div><h3>What your AI business partner builds and runs</h3><p class="hint">No tech skills needed. Nothing to install.</p><ul class="tick">${P.builds.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+ <div class="split"><div><h3>What your AI CEO builds and runs</h3><p class="hint">No tech skills needed. Nothing to install.</p><ul class="tick">${P.builds.map(x=>`<li>${x}</li>`).join("")}</ul></div>
  <div><h3>What only you do</h3><ul class="you">${P.you.map(x=>`<li>${x}</li>`).join("")}<li>Read a plain-English weekly update and tap approve</li></ul></div></div>
  <p class="fine">A fit score reflects how well a path matches your answers. It is not a prediction of results or income.</p>
  <div class="nav"><button class="back" id="redo">↺ Retake</button><a class="btn" href="#join">Reserve my build <span>→</span></a></div>`;
- document.getElementById("redo").onclick=()=>{st={i:0,a:{}};save();render()};
+ const retake=()=>{gc("retake","Retake quiz");st={i:0,a:{}};save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
+ ["redo","retry","wretake"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=retake});
+ document.getElementById("prt").onclick=()=>{gc("print","Print result");window.print()};
+ const f=document.getElementById("rsf");if(f)f.onsubmit=async e=>{e.preventDefault();const btn=f.querySelector("button");btn.disabled=true;document.getElementById("rserr").hidden=true;
+  gc("signup-results","Signup from results");let ok=false;try{const res=await post({email:f.email.value,type:"results_signup",source:"results",result:P.name,verdict:w.p,runner_up:R.name,fit:shown(w.fit),answers:summary(),in_their_words:st.story||{}});ok=res.ok}catch(_){}
+  if(ok){st.signed=true;st.email=f.email.value;save();f.outerHTML=`<p class="ok big" role="status">You're on the launch list! We'll email you your result, ${esc(P.name.toLowerCase())}, soon. Thank you.</p>`;const wl=document.getElementById("wl");wl.email.value=st.email}
+  else{btn.disabled=false;document.getElementById("rserr").hidden=false}};
+ st.res=P.name;st.back=false;save();
  if(st.counted!==w.p){gc("quiz-done-"+w.p,"Quiz verdict "+w.p);st.counted=w.p;save()}
- window.__result={winner:w.p,runner:ru.p,fit:w.fit};
+ window.__result={winner:w.p,runner:ru.p,fit:w.fit};if(st.email)document.getElementById("wl").email.value=st.email;
 }
 function summary(){const o={};Q.forEach(q=>{const v=st.a[q.id];if(v!=null&&v!==""&&!(Array.isArray(v)&&!v.length))o[q.id]=label(q,v)});return o}
 render();
 document.getElementById("wl").onsubmit=async e=>{e.preventDefault();const f=e.target;gc("waitlist-submit","Waitlist submit");
- const r=window.__result||{};try{await post({email:f.email.value,type:"waitlist",verdict:r.winner||"(quiz not finished)",runner_up:r.runner||"",fit:r.fit||"",answers:summary(),in_their_words:st.story||{}})}catch(_){}
- f.hidden=true;document.getElementById("wlmsg").hidden=false};
+ const r=window.__result||{};const b=f.querySelector("button");b.disabled=true;let ok=false;try{ok=(await post({email:f.email.value,type:"waitlist",result:r.winner?PATHS[r.winner].name:"(quiz not finished)",verdict:r.winner||"(quiz not finished)",runner_up:r.runner||"",fit:r.fit||"",answers:summary(),in_their_words:st.story||{}})).ok}catch(_){}
+ b.disabled=false;if(ok){f.hidden=true;document.getElementById("wlmsg").hidden=false}else alert("Sorry, that didn't go through. Please check your email and try again.")};
 document.getElementById("found").onclick=e=>{gc("founding-click","Founding $49 click");const em=document.getElementById("wl").email.value;const r=window.__result||{};
  post({type:"founding_click",email:em||"(none)",verdict:r.winner||"",answers:summary(),in_their_words:st.story||{}}).catch(()=>{});e.target.hidden=true;document.getElementById("fmsg").hidden=false};

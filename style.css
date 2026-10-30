@@ -170,3 +170,12 @@ body.long .hero h1{font-size:clamp(2.1rem,7.4vw,4rem)}
 p.tagline{font:italic 500 1.4rem/1.4 var(--serif)!important;color:var(--gold)!important;text-align:center}
 h2.eyebrow{font-family:inherit;font-weight:400;font-size:.72rem;letter-spacing:.18em;line-height:inherit}
 #faq h3{font-size:1.3rem;margin:1.4em 0 .3em}#faq p{margin:0;color:var(--mute)}
+
+.rsign{margin:26px 0 30px;padding:26px 24px;border:2px solid #C9962A;border-radius:16px;background:rgba(201,150,42,.07)}
+.rsign h3{margin:0 0 6px!important;font-size:1.5rem}.rsign p{font-size:1.1rem}
+#rsf{display:flex;flex-direction:column;gap:12px;margin-top:12px}#rsf input{font-size:1.15rem;padding:16px;margin:0}
+.btn.big{font-size:1.2rem;padding:18px 26px;justify-content:center}.ok.big{font-size:1.25rem;font-weight:600}
+.err{color:#b3261e;font-weight:600}.ropts{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.welcome{padding:18px 20px;border-radius:14px;background:rgba(201,150,42,.12);margin-bottom:18px}.welcome .wt{font-size:1.3rem;font-weight:600;margin:0 0 10px}.welcome .wb{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+@media(min-width:760px){#rsf{flex-direction:row}#rsf input{flex:1}}
+@media print{.top,.hero,.how,#join,#faq,footer,.rsign,.welcome,.nav,.bar,.ropts,#q{display:none!important}#quiz,#result{display:block!important}body,.card{background:#fff!important;color:#000!important;box-shadow:none!important;border:0!important}.card{padding:0!important}*{animation:none!important;opacity:1!important;transform:none!important}a{color:#000}}
