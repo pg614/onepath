@@ -15,6 +15,13 @@
 - [For real estate agents](https://buildonething.com/agents/): A side business idea for real estate agents
 - [For a side business](https://buildonething.com/side/): Starting one side business with an AI CEO doing the busy work
 
+## Guides
+
+- [All guides](https://buildonething.com/guides/): Plain, honest guides for overwhelmed beginners
+- [Too many side hustle ideas? How to pick one](https://buildonething.com/guides/too-many-side-hustle-ideas/): A step-by-step way to narrow many ideas down to one
+- [Easy online business for beginners over 50](https://buildonething.com/guides/online-business-over-50/): Simple, low-cost ideas that use life experience, plus scam warnings
+- [How to choose an online business with no experience](https://buildonething.com/guides/how-to-choose-an-online-business/): Five questions to choose one business that fits your time and skills
+
 ## Facts
 
 - Status: early test, not live yet. People can join a waitlist.
