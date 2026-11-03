@@ -218,3 +218,4 @@ a{text-decoration:none}
 }
 @media print{h3.pbh{break-before:page;page-break-before:always}}
 @media print{body.pr section:not(#quiz),body.pr .story,body.pr header,body.pr aside{display:none!important}}
+[data-theme=dark] .plan a,[data-theme=dark] .receipts a{color:#E8BE5C}
