@@ -189,3 +189,8 @@ body.guide a.logo{color:inherit;text-decoration:none}body.guide .cta{text-align:
 .samples .tag{margin:0 0 .4rem}
 .guide blockquote.note{border-left:3px solid #C9962A;padding:.6rem 1rem;margin:1rem 0;font-style:italic}
 .samples.how{padding-top:10px}.samples a{color:#C9962A}
+
+.plan .tw{overflow-x:auto;margin:.6rem 0}.plan table.pt{width:100%;border-collapse:collapse;font-size:.92rem}.plan .pt th,.plan .pt td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}.plan .pt th{font-family:var(--sans);font-weight:600;color:var(--mute)}
+.prompt{position:relative;background:#F6F0E2;border:1px solid var(--line);border-radius:14px;margin:.6rem 0 1rem}.prompt pre{white-space:pre-wrap;word-wrap:break-word;font:13.5px/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0;padding:48px 16px 16px;max-height:520px;overflow:auto;color:var(--ink)}.prompt.sm pre{max-height:none;padding-top:44px}
+.prompt .copy{position:absolute;top:10px;right:10px;font:600 .85rem var(--sans);background:#C9962A;color:#fff;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+[data-theme=dark] .prompt{background:#1F2A47}.plan ol.steps li{margin-bottom:.4rem}.lead{font-size:1.15rem}
