@@ -194,3 +194,27 @@ body.guide a.logo{color:inherit;text-decoration:none}body.guide .cta{text-align:
 .prompt{position:relative;background:#F6F0E2;border:1px solid var(--line);border-radius:14px;margin:.6rem 0 1rem}.prompt pre{white-space:pre-wrap;word-wrap:break-word;font:13.5px/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0;padding:48px 16px 16px;max-height:520px;overflow:auto;color:var(--ink)}.prompt.sm pre{max-height:none;padding-top:44px}
 .prompt .copy{position:absolute;top:10px;right:10px;font:600 .85rem var(--sans);background:#C9962A;color:#fff;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
 [data-theme=dark] .prompt{background:#1F2A47}.plan ol.steps li{margin-bottom:.4rem}.lead{font-size:1.15rem}
+/* v4 PDF */
+.printhead,.printfoot{display:none}.pdfrow{margin:14px 0 6px}.pdfbtn{font-size:1.02rem}
+@media print{
+@page{size:letter;margin:14mm 15mm 16mm}body{padding-bottom:8mm!important}
+html,body{background:#fff!important;color:#111!important;font-size:12pt!important;line-height:1.5}
+body *{color:#111!important;text-shadow:none!important}
+body::before,body::after,.stars,canvas,.top,nav,footer,form,.copy,.pdfrow,.ropts,.nav,.cta,.rsign,.welcome,.eyebrow,.tag,#rs,#join,#faq,.hero,.how,script{display:none!important}
+main,.wrap,.card,article{max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;border:0!important;box-shadow:none!important}
+.printhead{display:flex!important;justify-content:space-between;align-items:baseline;border-bottom:2px solid #C9962A;padding-bottom:6px;margin-bottom:14px;font-size:10pt}
+.printhead b{font:500 15pt "EB Garamond",Georgia,serif;color:#8a6414!important}.printhead span{font-style:italic;color:#555!important}
+.printfoot{display:block!important;position:fixed;bottom:0;background:#fff!important;left:0;right:0;text-align:center;font-size:8.5pt;color:#666!important;border-top:1px solid #ddd;padding-top:3px}
+h1{font-size:24pt}h2{font-size:16pt;break-after:avoid;page-break-after:avoid;margin-top:1.2em}h3{break-after:avoid}
+h2.pb{break-before:page;page-break-before:always}
+figure,svg,.fit .r,.glance,.ladder li,.verdict,table,tr,.receipts li,.warn,.note,.money li,.road li,.dim,.split>div{break-inside:avoid;page-break-inside:avoid}
+.illo{margin:10px 0!important}.illo img{max-height:85mm;object-fit:cover}
+.bar,.bar i,.chart,.glance div,.warn,.note,.ladder li{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.warn,.note{background:#f7f1e3!important;border-left:3px solid #C9962A}
+.prompt{background:#fafafa!important;border:1px solid #ccc!important}.prompt pre{max-height:none!important;overflow:visible!important;padding:10px!important;font-size:9pt!important}
+article a[href^="http"]::after,#result a[href^="http"]::after{content:" (" attr(href) ")";font-size:8.5pt;color:#555!important;word-break:break-all}
+a{text-decoration:none}
+#result .printfoot{display:block!important}
+}
+@media print{h3.pbh{break-before:page;page-break-before:always}}
+@media print{body.pr section:not(#quiz),body.pr .story,body.pr header,body.pr aside{display:none!important}}

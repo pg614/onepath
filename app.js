@@ -199,22 +199,22 @@ function done(){
  const S=st.story||{};const refl=[S.overwhelm?`You said “${esc(snip(S.overwhelm))}” feels like a lot right now. That's why your plan sticks to one thing, and AI can handle the busy work.`:"",S.feel?`You said you'd like it to feel “${esc(snip(S.feel))}”. We'll keep your plan calm and simple with that in mind.`:""].filter(Boolean).map(x=>`<p class="note">${x}</p>`).join("");
  qEl.hidden=true;rEl.hidden=false;
  document.getElementById("wlv").value=w.p;
- rEl.innerHTML=`<div class="bar"><i style="width:100%"></i></div><p class="prog">Your free initial direction</p>
+ rEl.innerHTML=`<div class="printhead"><b>✦ Build One Thing</b><span>Build one thing. Then another. But first, just start one.</span></div><div class="printfoot">buildonething.com · Your free initial direction. Not a promise or prediction of income.</div><div class="bar"><i style="width:100%"></i></div><p class="prog">Your free initial direction</p>
  ${st.back?`<div class="welcome" id="welcome"><p class="wt">Welcome back, here's your direction.</p><div class="wb"><a class="btn alt" href="#rs" id="wview">View it</a><button class="back" id="wretake">↺ Retake the quiz</button></div></div>`:""}
  <p class="verdict">${P.name}</p><p class="lede">${P.line}</p>
  <div class="rsign" id="rs"><h3>Email me my result &amp; save my spot</h3><p>We'll email you this result to keep and put you on the list for the Full Plan. Free, no card.</p>
  ${st.signed?`<p class="ok big">You're on the launch list. We'll email you your result soon. Thank you!</p>`:`<form id="rsf"><input type="email" name="email" required placeholder="you@email.com" aria-label="Your email"><button class="btn big" type="submit">Email me my result <span>→</span></button></form><p class="err" id="rserr" hidden>Sorry, that didn't go through. Please check your email and try again.</p>`}
- <div class="ropts"><button class="back" id="retry">Not quite right? Try again</button><button class="back" id="prt">🖨 Print / save as PDF</button></div></div>${refl}
+ <div class="ropts"><button class="back" id="retry">Not quite right? Try again</button></div><p class="pdfrow"><button class="btn pdfbtn" id="prt">⬇ Download my result as a PDF</button><span class="hint"> Opens your print screen. Choose "Save as PDF".</span></p></div>${refl}
  <div class="fit"><div class="fitnum"><b>${shown(w.fit)}</b><span>${fitLabel(shown(w.fit))}</span></div><div class="dims"><p class="dh">Your strengths for this path</p>${SECTIONS.map((s,i)=>[s,w.d[i]]).sort((x,y)=>y[1]-x[1]).map(([s,v],j,arr)=>j===arr.length-1?`<div class="dim covered"><span>${s}</span><em class="cov">AI can cover this part for you</em></div>`:`<div class="dim"><span>${s}</span><div class="track"><i style="width:${shown(v)}%"></i></div><em>${shown(v)}</em></div>`).join("")}</div></div>
  <h3>How it works</h3><p>${M.how}</p>
  <h3>Example ideas for you</h3><ul class="why">${ideasFor(w.p).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
  <h3>Why this fits you</h3><ul class="why">${reasons}</ul>${nicheLine}
  <h3>Runner-up: ${R.name}</h3><p class="mute">A close second, with a fit of ${shown(ru.fit)}. It came second mainly because of <b>${gaps[0].toLowerCase()}</b>: your first choice matched your answers better there.</p>
- <h3>How it can make money</h3><ul class="money">${M.money.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
+ <h3 class="pbh">How it can make money</h3><ul class="money">${M.money.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
  <p class="warn">Honest note: results vary a lot. Many new online projects earn nothing for months, and some never do. We don't promise or predict any income.</p>
  <h3>Ways to bring people in</h3><ul class="money">${G.s.map(([n,d])=>`<li><b>${n}</b><span>${d}</span></li>`).join("")}</ul>
  <p class="warn">Growth usually takes months, so a little steady work each week matters more than big bursts.</p>
- <h3>Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d],j)=>`<li><b>${t}</b><span>${d}${j===2?" "+G.mile:""}</span></li>`).join("")}</ol>
+ <h3 class="pbh">Your 6 to 12 month roadmap</h3><ol class="road">${M.road.map(([t,d],j)=>`<li><b>${t}</b><span>${d}${j===2?" "+G.mile:""}</span></li>`).join("")}</ol>
  <p class="fine">Milestones are possible goals, not promises. Timing depends on your topic and effort.</p>
  <div class="split"><div><h3>What AI can help you build</h3><p class="hint">No tech skills needed. Nothing to install.</p><ul class="tick">${P.builds.map(x=>`<li>${x}</li>`).join("")}</ul></div>
  <div><h3>What only you do</h3><ul class="you">${P.you.map(x=>`<li>${x}</li>`).join("")}<li>Take one small step each day</li></ul></div></div>
@@ -224,7 +224,7 @@ function done(){
  const f2=document.getElementById("found2");if(f2)f2.onclick=e=>planClick(e,"fmsg2");
  const retake=()=>{gc("retake","Retake quiz");ga("retake");st={i:0,a:{}};save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
  ["redo","retry","wretake"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=retake});
- document.getElementById("prt").onclick=()=>{gc("print","Print result");window.print()};
+ document.getElementById("prt").onclick=()=>{gc("pdf","PDF download");ga("pdf_download",{page_type:"quiz_result",result_name:P.name});document.body.classList.add("pr");window.print();setTimeout(()=>document.body.classList.remove("pr"),1500)};
  const f=document.getElementById("rsf");if(f)f.onsubmit=async e=>{e.preventDefault();const btn=f.querySelector("button");btn.disabled=true;document.getElementById("rserr").hidden=true;
   gc("signup-results","Signup from results");let ok=false;try{const res=await post({email:f.email.value,type:"results_signup",source:"results",result:P.name,verdict:w.p,runner_up:R.name,fit:shown(w.fit),answers:summary(),in_their_words:st.story||{}});ok=res.ok}catch(_){}
   if(ok&&MAILER){fetch(MAILER,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({email:f.email.value,verdict:w.p})}).catch(()=>{})}
