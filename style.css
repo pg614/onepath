@@ -223,3 +223,5 @@ a{text-decoration:none}
 .wlbox .wlf{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
 .wlbox input{flex:1 1 220px;font-size:1.1rem;padding:12px;border-radius:10px;border:1px solid #999}
 .wlbox .fine{font-size:.95rem;opacity:.85}
+
+.logo{font:800 1.3rem "Inter Tight",var(--sans);letter-spacing:-.02em;gap:10px;color:var(--ink)}.logo .mk{width:32px;height:32px}.logo .mb{fill:#0D1426}.logo .m1{fill:#FDF8EE}[data-theme=dark] .logo .mb{fill:#F4EFE6}[data-theme=dark] .logo .m1{fill:#0D1426}footer .logo{font-size:1.05rem}footer .logo .mk{width:24px;height:24px}@media(max-width:480px){.top .logo{font-size:1.05rem;gap:7px}.top .logo .mk{width:26px;height:26px}}
