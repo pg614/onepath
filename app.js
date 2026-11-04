@@ -4,9 +4,12 @@ const KEY = "onepath-v3";
 // Google Apps Script web app that emails each results signup their result (tools/email-result.gs). Empty = off.
 const MAILER = "https://script.google.com/macros/s/AKfycbxVNkoNWRKj4a9txWKSn-3nepqARkfVnIBN18BnEUOWojQbZohRtwUSjkPqUSjWZHDGOQ/exec";
 const SRC = document.documentElement.dataset.src||"home";
+// Ad tracking: first-touch utm_source/utm_campaign (or ?ref) kept 30 days.
+const UTM=(()=>{const K="op-utm",D=30*864e5;let u=null;try{u=JSON.parse(localStorage.getItem(K)||"null");if(u&&Date.now()-u.t>D)u=null;const q=new URLSearchParams(location.search),s=q.get("utm_source")||(q.get("ref")?"ref":""),c=q.get("utm_campaign")||q.get("ref")||"";if(!u&&(s||c)){u={s:s.slice(0,60),c:c.slice(0,60),t:Date.now()};localStorage.setItem(K,JSON.stringify(u))}}catch(e){}return u?{utm_source:u.s||"",utm_campaign:u.c||""}:{utm_source:"",utm_campaign:""}})();
+const CAMP=UTM.utm_campaign.toLowerCase().replace(/[^a-z0-9_-]+/g,"-").slice(0,40);
 const gc = (path,title)=>{if(SRC!=="home"){path+="-"+SRC;title+=" ("+SRC+")"}try{window.goatcounter&&goatcounter.count({path,title,event:true})}catch(e){}};
-const post = d=>(d={source:SRC,page:location.pathname,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
-const ga=(n,p)=>{try{window.gtag&&gtag("event",n,p||{})}catch(e){}};
+const post = d=>(d={source:SRC,page:location.pathname,utm_source:UTM.utm_source,utm_campaign:UTM.utm_campaign,...d},fetch(FORM,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(d)}));
+const ga=(n,p)=>{p=p||{};if(n==="sign_up"||n==="plan199_click"){p={...p,utm_source:UTM.utm_source,utm_campaign:UTM.utm_campaign};if(CAMP)gc((n==="sign_up"?"signup-":"plan199-")+CAMP,(n==="sign_up"?"Signup ":"Plan $199 click ")+CAMP)}try{window.gtag&&gtag("event",n,p)}catch(e){}};
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const PATHS={
@@ -232,7 +235,7 @@ function done(){
   else{btn.disabled=false;document.getElementById("rserr").hidden=false}};
  st.res=P.name;st.back=false;save();
  if(st.counted!==w.p){gc("quiz-done-"+w.p,"Quiz verdict "+w.p);ga("quiz_complete",{result_name:P.name});st.counted=w.p;save()}
- window.__result={winner:w.p,runner:ru.p,fit:w.fit};if(st.email)document.getElementById("wl").email.value=st.email;
+ window.__result={winner:w.p,runner:ru.p,fit:w.fit};if(CAMP)gc("quizdone-"+CAMP,"Quiz done "+CAMP);if(st.email)document.getElementById("wl").email.value=st.email;
 }
 function summary(){const o={};Q.forEach(q=>{const v=st.a[q.id];if(v!=null&&v!==""&&!(Array.isArray(v)&&!v.length))o[q.id]=label(q,v)});return o}
 render();
