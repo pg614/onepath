@@ -97,7 +97,7 @@ function render(){
  qEl.innerHTML=`<div class="bar"><i style="width:${pctDone}%"></i></div>
  <p class="prog">${SECTIONS[q.s]} · Question ${st.i+1} of ${Q.length}</p><h2>${q.q}</h2>${q.hint?`<p class="hint">${q.hint}</p>`:""}${body}
  <div class="nav">${st.i?'<button class="back" id="back">← Go back</button>':"<span></span>"}${needNext?`<button class="btn" id="next">${q.t==="text"&&!v?"Skip":"Next"} <span>→</span></button>`:""}</div>`;
- const go=()=>{st.i++;save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
+ const go=()=>{st.i++;save();render();(rEl.hidden?document.getElementById("quiz"):document.getElementById("rtop")).scrollIntoView({behavior:"smooth",block:"start"})};
  if(q.t==="single")qEl.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{st.a[q.id]=+b.dataset.k;go()});
  if(q.t==="multi")qEl.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const k=+b.dataset.k,a=st.a[q.id]||[];st.a[q.id]=a.includes(k)?a.filter(x=>x!==k):[...a,k];b.classList.toggle("sel");save()});
  if(q.t==="slider"){const r=document.getElementById("rng");st.a[q.id]=+r.value;r.oninput=()=>{st.a[q.id]=+r.value;document.getElementById("slv").textContent=r.value+" "+q.unit;save()}}
@@ -115,7 +115,7 @@ function story(){rEl.hidden=true;qEl.hidden=false;const s=st.story||{};
  const read=()=>{const o={};STORY.forEach(([k])=>{const v=document.getElementById("st-"+k).value.trim();if(v)o[k]=v});return o};
  STORY.forEach(([k])=>document.getElementById("st-"+k).oninput=()=>{st.story=read();save()});
  document.getElementById("back").onclick=()=>{st.i=Q.length-1;save();render()};
- const fin=skip=>{st.story=skip?{}:read();const filled=Object.keys(st.story).length>0;gc(filled?"story-filled":"story-skipped",filled?"Story filled":"Story skipped");st.storyDone=true;save();render();document.getElementById("quiz").scrollIntoView({behavior:"smooth",block:"start"})};
+ const fin=skip=>{st.story=skip?{}:read();const filled=Object.keys(st.story).length>0;gc(filled?"story-filled":"story-skipped",filled?"Story filled":"Story skipped");st.storyDone=true;save();render();(rEl.hidden?document.getElementById("quiz"):document.getElementById("rtop")).scrollIntoView({behavior:"smooth",block:"start"})};
  document.getElementById("skip").onclick=()=>fin(true);document.getElementById("see").onclick=()=>fin(false)}
 const snip=t=>{t=t.replace(/\s+/g," ").trim().replace(/[.!?,;:]+$/,"");const w=t.split(" ");return w.length>12?w.slice(0,12).join(" ")+"…":t};
 // ---- richer result content ----
@@ -204,7 +204,7 @@ function done(){
  document.getElementById("wlv").value=w.p;
  rEl.innerHTML=`<div class="printhead"><b>✦ Build One Thing</b><span>Build one thing. Then another. But first, just start one.</span></div><div class="printfoot">buildonething.com · Your free initial direction. Not a promise or prediction of income.</div><div class="bar"><i style="width:100%"></i></div><p class="prog">Your free initial direction</p>
  ${st.back?`<div class="welcome" id="welcome"><p class="wt">Welcome back, here's your direction.</p><div class="wb"><a class="btn alt" href="#rs" id="wview">View it</a><button class="back" id="wretake">↺ Retake the quiz</button></div></div>`:""}
- <p class="verdict">${P.name}</p><p class="lede">${P.line}</p>
+ <div class="rhead" id="rtop"><p class="rkick">Your match</p><h2 class="verdict">${P.name}</h2><p class="lede">${P.line}</p></div>
  <div class="rsign" id="rs"><h3>Email me my result &amp; save my spot</h3><p>We'll email you this result to keep and put you on the list for the Full Plan. Free, no card.</p>
  ${st.signed?`<p class="ok big">You're on the launch list. We'll email you your result soon. Thank you!</p>`:`<form id="rsf"><input type="email" name="email" required placeholder="you@email.com" aria-label="Your email"><button class="btn big" type="submit">Email me my result <span>→</span></button></form><p class="err" id="rserr" hidden>Sorry, that didn't go through. Please check your email and try again.</p>`}
  <div class="ropts"><button class="back" id="retry">Not quite right? Try again</button></div><p class="pdfrow"><button class="btn pdfbtn" id="prt">⬇ Download my result as a PDF</button><span class="hint"> Opens your print screen. Choose "Save as PDF".</span></p></div>${refl}
